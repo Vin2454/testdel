@@ -1,0 +1,61 @@
+  public void ConfigureServices(IServiceCollection services)
+        {
+            //option 1
+            //var oktaMvcOptions = new vinoktaOptions();
+            ////Configuration.GetSection("Okta").Bind(oktaMvcOptions);
+            //oktaMvcOptions.ClientId = "0oai65g75m1RXbsXu0h7";
+            //oktaMvcOptions.ClientSecret = "ichi4hsNHLg5PsLODj4oInIMG64ZfruwjQeQ_WgH";
+            //oktaMvcOptions.OktaDomain = "https://dev-911638.oktapreview.com";
+
+            //oktaMvcOptions.Scope = new List<string> { "openid", "profile", "email" };
+            //oktaMvcOptions.GetClaimsFromUserInfoEndpoint = true;
+            ////oktaMvcOptions.Authority = "test";
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = OktaDefaults.MvcAuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddOktaMvc(oktaMvcOptions);
+
+            //option 2
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddOpenIdConnect(options =>
+            //{
+            //    options.ClientId = "0oai65g75m1RXbsXu0h7";
+            //    options.ClientSecret = "ichi4hsNHLg5PsLODj4oInIMG64ZfruwjQeQ_WgH";
+            //    options.Authority = "https://dev-911638.oktapreview.com/oauth2/default";
+            //    options.CallbackPath = "/authorization-code/callback";
+            //    options.ResponseType = "code";
+            //    options.SaveTokens = true;
+            //    options.UseTokenLifetime = true;
+            //    options.GetClaimsFromUserInfoEndpoint = true;
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.TokenValidationParameters =
+            //    new TokenValidationParameters
+            //    {
+            //        NameClaimType = "name"
+            //    };
+            //});
+
+            //option 3
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+           .AddJwtBearer(options =>
+           {
+               options.Authority = "https://dev-911638.oktapreview.com/oauth2/default";
+               options.Audience = "api://default";
+               options.Challenge = "Automatic";
+           });
+
+            services.AddMvc();
+
+        }
