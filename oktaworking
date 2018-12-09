@@ -1,4 +1,4 @@
-  public void ConfigureServices(IServiceCollection services)
+   public void ConfigureServices(IServiceCollection services)
         {
             //option 1
             //var oktaMvcOptions = new vinoktaOptions();
@@ -20,7 +20,7 @@
             //.AddCookie()
             //.AddOktaMvc(oktaMvcOptions);
 
-            //option 2
+            ////option 2
             //services.AddAuthentication(options =>
             //{
             //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -47,14 +47,23 @@
             //    };
             //});
 
-            //option 3
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-           .AddJwtBearer(options =>
-           {
-               options.Authority = "https://dev-911638.oktapreview.com/oauth2/default";
-               options.Audience = "api://default";
-               options.Challenge = "Automatic";
-           });
+            // //option 3
+            services.AddAuthentication(option => {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options => {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "api://default",
+                    ValidIssuer = "https://dev-911638.oktapreview.com/oauth2/default",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Paris Berlin Cairo Sydney Tokyo Beijing Rome London Athens"))
+                };
+            });
 
             services.AddMvc();
 
