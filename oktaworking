@@ -68,3 +68,31 @@
             services.AddMvc();
 
         }
+        
+        
+          public IActionResult Login()
+        {
+            if (!HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Challenge(OktaDefaults.MvcAuthenticationScheme);
+            }
+            return RedirectToAction("Index", "Home");
+
+
+            //var signinKey = new SymmetricSecurityKey(
+            //     Encoding.UTF8.GetBytes("Paris Berlin Cairo Sydney Tokyo Beijing Rome London Athens"));
+            //int expiryInMinutes = 2;
+            //var token = new JwtSecurityToken(
+            //      issuer: "https://dev-911638.oktapreview.com/oauth2/default",
+            //      audience: "api://default",
+            //      expires: DateTime.UtcNow.AddMinutes(expiryInMinutes),
+            //      signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256)
+            //    );
+
+            //return Ok(
+            //     new
+            //     {
+            //         token = new JwtSecurityTokenHandler().WriteToken(token),
+            //         expiration = token.ValidTo
+            //     });
+        }
