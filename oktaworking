@@ -64,6 +64,34 @@
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Paris Berlin Cairo Sydney Tokyo Beijing Rome London Athens"))
                 };
             });
+            
+            //option 4
+             services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OktaDefaults.MvcAuthenticationScheme;
+            })
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = OktaDefaults.ApiAuthenticationScheme;
+            //    options.DefaultChallengeScheme = OktaDefaults.ApiAuthenticationScheme;
+            //    options.DefaultSignInScheme = OktaDefaults.ApiAuthenticationScheme;
+            //})
+            //services.AddAuthentication()
+            .AddCookie()
+            .AddOktaMvc(new OktaMvcOptions
+            {
+                OktaDomain = Configuration["OktaWebApp:Domain"],
+                ClientId = Configuration["OktaWebApp:ClientId"],
+                ClientSecret = Configuration["OktaWebApp:ClientSecret"]
+            })
+
+            .AddOktaWebApi(new OktaWebApiOptions()
+            {
+                ClientId = Configuration["Okta:ClientId"],
+                OktaDomain = Configuration["Okta:OktaDomain"],
+            })
 
             services.AddMvc();
 
